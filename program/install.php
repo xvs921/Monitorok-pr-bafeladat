@@ -80,7 +80,7 @@ class Install extends Database
             for ($i = 0; $i < $length; $i++) {
                 $randomString .= $characters[rand(0, $charactersLength - 1)];
             }
-        $length1=210;
+        $length1=120;
             $charactersLength1 = strlen($characters);
             $randomString1 = '';
             for ($i = 0; $i < $length1; $i++) {
@@ -91,11 +91,10 @@ class Install extends Database
             $this->row = $this->result->fetch_assoc();
             $size_id=$this->row["id"];  
 
-        $this->sql = "INSERT INTO monitor(size_id, resolution_id, brand_id, price, discount_price, name, description) 
-        VALUES ((SELECT id FROM size ORDER BY RAND() LIMIT 1),1, 
-        1,".$price.",".$discountPrice.",'".$randomString."','".$randomString1."')";
-        echo $this->sql;
-        $this->result = $this->conn->query($this->sql);
+            $this->sql = "INSERT INTO monitor(size_id, resolution_id, brand_id, price, discount_price, name, description) 
+            VALUES ((SELECT id FROM size ORDER BY RAND() LIMIT 1),(SELECT id FROM resolution ORDER BY RAND() LIMIT 1), 
+            (SELECT id FROM brand ORDER BY RAND() LIMIT 1),".$price.",".$discountPrice.",'".$randomString."','".$randomString1."')";
+            $this->result = $this->conn->query($this->sql);
     }
 }
 ?>

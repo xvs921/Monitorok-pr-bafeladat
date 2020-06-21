@@ -23,5 +23,9 @@ class Database
 	public function __destruct()
 	{
 		$this->conn->close();
+	}
+	public function bont()
+	{
+		$this->conn->close();
     }
 }?>
