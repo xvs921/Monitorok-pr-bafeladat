@@ -1,6 +1,6 @@
 <?php
-include("program-files/database.php");
-class Install extends Database
+include("program-files/class.php");
+class Install extends Classes
 {
     public function createDB()
 	{
@@ -95,6 +95,10 @@ class Install extends Database
             VALUES ((SELECT id FROM size ORDER BY RAND() LIMIT 1),(SELECT id FROM resolution ORDER BY RAND() LIMIT 1), 
             (SELECT id FROM brand ORDER BY RAND() LIMIT 1),".$price.",".$discountPrice.",'".$randomString."','".$randomString1."')";
             $this->result = $this->conn->query($this->sql);
+    }
+    public function func()
+    {
+        $_SESSION['search'] = "";
     }
 }
 ?>

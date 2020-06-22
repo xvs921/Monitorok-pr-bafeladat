@@ -1,7 +1,7 @@
 <?php
-include("program-files/class.php");
-$inst = new Classes();
-$inst->createDB();
+include("install.php");
+$inst = new Install();
+/*$inst->createDB();
 $inst->createTableSize();
 $inst->createTableResolution();
 $inst->createTableBrand();
@@ -12,6 +12,13 @@ $piece=rand(50,120);
 for($i=0;$i<$piece;$i++)
 {
     $inst->dataUpload2(20);
+}*/
+$inst->func();
+if (isset($_POST["action"]) && ($_POST["action"] == "cmd_search"))
+{
+    $inst->list();
 }
-$class->list();
+else{
+    $inst->list();
+}
 ?>
