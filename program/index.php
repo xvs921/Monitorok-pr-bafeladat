@@ -1,19 +1,12 @@
 <?php
 include("install.php");
 $inst = new Install();
-/*$inst->createDB();
-$inst->createTableSize();
-$inst->createTableResolution();
-$inst->createTableBrand();
-$inst->createTableMonitor();
-$inst->foreignKeys();
-$inst->dataUpload();
-$piece=rand(50,120);
-for($i=0;$i<$piece;$i++)
+$inst->createDB();
+$inst->staticDataUpload();
+if($inst->data()==0)
 {
-    $inst->dataUpload2(20);
-}*/
-$inst->func();
+$inst->randomDataUpload();
+}
 if (isset($_POST["action"]) && ($_POST["action"] == "cmd_search"))
 {
     $inst->list();

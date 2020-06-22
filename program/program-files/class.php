@@ -93,7 +93,6 @@ class Classes extends Database
             echo $this->sql;
         }
         $this->result = $this->conn->query($this->sql);
-        echo $_GET['search'];
         ?>
         <table>
         <tr><th>Id</th><th>Inch</th><th>Resolution</th><th>Brand</th>
