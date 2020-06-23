@@ -12,6 +12,9 @@ class Database
 	
 	public function __construct()
 	{
+		/**
+		 * connect to server
+		 */
 		$this->conn = new mysqli($this->servername, $this->username, $this->password);
 		if ($this->conn->connect_error)
 		{
@@ -24,8 +27,4 @@ class Database
 	{
 		$this->conn->close();
 	}
-	public function bont()
-	{
-		$this->conn->close();
-    }
 }?>

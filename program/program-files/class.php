@@ -1,23 +1,26 @@
 <?php
+/**
+ * EXTEND from Database
+ */
 include("database.php");
 class Classes extends Database
 {	
 	public function list()
 	{
+        /**
+         * HEADLINE
+         * SEARCH FORM with action='cmd_search'
+         */
         ?><center><h1>Monitor Selling</h1></center>
         <form method="POST" class="form-inline">
-            <input style="width:250px;" type="text" name="input_search" placeholder="Brand name">
+            <input style="width:300px;" type="text" name="input_search" placeholder="Brand name, Resolution, Size(in inches)">
             <input type="hidden" name="action" value="cmd_search">
             <input type="submit" class="btn btn-primary" value="Search">
         </form>
-    <?php
-        $resultPerPage=20;
-        
-        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
-        /*if (!$this->result) {
-            trigger_error('Invalid query: ' . $this->conn->error);
-        }*/
-
+        <?php
+        /**
+         * what is PAGE NUMBER?
+         */
         if(!isset($_GET['page']))
         {
             $page=1;
@@ -26,11 +29,35 @@ class Classes extends Database
             $page=$_GET['page'];
         }
 
+        /**
+         * init properties
+         * @var int results on a page
+         * @var string search value
+         * @var int how many pages
+         * @var int first item on this page
+         */
+        $resultPerPage=20;
         $search="";
         $pageNumber=0;
         $firstItem=($page-1)*$resultPerPage;
 
-        if(isset($_GET['sort']) && $_GET['sort']=="valueMax")
+        /**
+         * $this->conn add $this->dbname
+         */
+        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
+
+        /**
+         * LIST what is the sql statement?
+         * case 1: ASC
+         * case 2: DESC
+         * case 3: else
+         * 
+         * every case contains:
+         *  is there SEARCH 
+         *  what is all page number
+         *  add LIMIT for pagination
+         */
+        if(isset($_GET['sort']) && $_GET['sort']=="valueAsc")
         {
             if (isset($_POST["input_search"])) {
                 $search = $_POST["input_search"];
@@ -44,13 +71,13 @@ class Classes extends Database
             LEFT JOIN brand b ON b.id=m.brand_id
             LEFT JOIN resolution r ON r.id=m.resolution_id
             LEFT JOIN size s ON s.id=m.size_id
-            WHERE b.brand_name LIKE '".$search."%'
+            WHERE b.brand_name LIKE '%".$search."%' OR r.resolution_value LIKE '%".$search."%' OR s.inch LIKE '%".$search."%'
             ORDER BY price ASC";
             $this->result = $this->conn->query($this->sql);
             $pageNumber=ceil($this->result->num_rows/$resultPerPage);
             $this->sql.=" LIMIT ". $firstItem.','.$resultPerPage;
         }
-        else if(isset($_GET['sort']) && $_GET['sort']=="valueMin")
+        else if(isset($_GET['sort']) && $_GET['sort']=="valueDesc")
         {
             if (isset($_POST["input_search"])) {
                 $search = $_POST["input_search"];
@@ -64,7 +91,7 @@ class Classes extends Database
             LEFT JOIN brand b ON b.id=m.brand_id
             LEFT JOIN resolution r ON r.id=m.resolution_id
             LEFT JOIN size s ON s.id=m.size_id
-            WHERE b.brand_name LIKE '".$search."%'
+            WHERE b.brand_name LIKE '%".$search."%' OR r.resolution_value LIKE '%".$search."%' OR s.inch LIKE '%".$search."%'
             ORDER BY price DESC";
             $this->result = $this->conn->query($this->sql);
             $pageNumber=ceil($this->result->num_rows/$resultPerPage);
@@ -84,12 +111,20 @@ class Classes extends Database
             LEFT JOIN brand b ON b.id=m.brand_id
             LEFT JOIN resolution r ON r.id=m.resolution_id
             LEFT JOIN size s ON s.id=m.size_id
-            WHERE b.brand_name LIKE '".$search."%' ORDER BY id";
+            WHERE b.brand_name LIKE '%".$search."%' OR r.resolution_value LIKE '%".$search."%' OR s.inch LIKE '%".$search."%' 
+            ORDER BY id";
             $this->result = $this->conn->query($this->sql);
             $pageNumber=ceil($this->result->num_rows/$resultPerPage);
             $this->sql.=" LIMIT ". $firstItem.','.$resultPerPage;
         }
+        /**
+         * execute SQL
+         */
         $this->result = $this->conn->query($this->sql);
+
+        /**
+         * LIST table header
+         */
         ?>
         <table>
             <tr>
@@ -99,17 +134,17 @@ class Classes extends Database
                 <th>Brand</th>
                 <th>
                 <?php if(isset($_GET['search'])){
-                    echo '<a href="index.php?page=1&sort=valueMin&search='.$_GET['search'].'">s</a>';
+                    echo '<a href="index.php?page=1&sort=valueDesc&search='.$_GET['search'].'">d</a>';
                 }
                 else{?>
-                    <a href="index.php?page=1&sort=valueMin">s</a>
+                    <a href="index.php?page=1&sort=valueDesc">d</a>
                 <?php } ?>
                 Price
                 <?php if(isset($_GET['search'])){
-                    echo '<a href="index.php?page=1&sort=valueMax&search='.$_GET['search'].'">d</a>';
+                    echo '<a href="index.php?page=1&sort=valueAsc&search='.$_GET['search'].'">a</a>';
                 }
                 else{?>
-                    <a href="index.php?page=1&sort=valueMax">d</a>
+                    <a href="index.php?page=1&sort=valueAsc">a</a>
                 <?php } ?>
                 </th>
                 <th>Discount price</th>
@@ -117,18 +152,21 @@ class Classes extends Database
                 <th>Description</th>
             </tr>
         <?php
+        /**
+         * LIST table items
+         */
         if ($this->result->num_rows > 0) {
             while($this->row = $this->result->fetch_assoc()) { ?>
-        <tr>
-            <td><?php echo $this->row["id"]; ?></td>
-            <td><?php echo $this->row["inch"]; ?></td>
-            <td><?php echo $this->row["resolution_value"]; ?></td>
-            <td><?php echo $this->row["brand_name"]; ?></td>
-            <td><?php echo $this->row["price"]." HUF"; ?></td>
-            <td><?php echo $this->row["discount_price"]." HUF"; ?></td>
-            <td><?php echo $this->row["name"]; ?></td>
-            <td><?php echo $this->row["description"]; ?></td>
-        </tr>
+                <tr>
+                    <td><?php echo $this->row["id"]; ?></td>
+                    <td><?php echo $this->row["inch"]; ?></td>
+                    <td><?php echo $this->row["resolution_value"]; ?></td>
+                    <td><?php echo $this->row["brand_name"]; ?></td>
+                    <td><?php echo $this->row["price"]." HUF"; ?></td>
+                    <td><?php echo $this->row["discount_price"]." HUF"; ?></td>
+                    <td><?php echo $this->row["name"]; ?></td>
+                    <td><?php echo $this->row["description"]; ?></td>
+                </tr>
         <?php } 
         } 
         else{
@@ -140,7 +178,9 @@ class Classes extends Database
         }?>
         </table> <?php
 
-
+        /**
+         * pagination on every situation
+         */
         for($page=1;$page<=$pageNumber;$page++){
             if(isset($_GET['sort']) && isset($_GET['search']))
             {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * EXTEND from Classes
+ */
 include("program-files/class.php");
 class Install extends Classes
 {
