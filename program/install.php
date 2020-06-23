@@ -113,21 +113,22 @@ class Install extends Classes
             */
             $this->sql = "INSERT INTO resolution(resolution_value) VALUES ('HD'),('FUll HD'),('4K UHD'),('QHD'),('HD+')";
             $this->result = $this->conn->query($this->sql);
+
+            $_SESSION['piece']=rand(50,120);
+            echo $_SESSION['piece'];
         }
     }
 
     /**
-    * RANDOM DATA UPLOAD 
-    * @param int $discount
+    * RANDOM DATA UPLOAD to monitor table
     */
     public function randomDataUpload()
     {
+
         /**
         * CHECK database state 
         * IS THERE any data in my database?
         */
-        $piece=rand(50,120);
-        echo $piece;
         $this->sql = "SELECT * FROM monitor";
         $this->result = $this->conn->query($this->sql);
         /**
@@ -135,62 +136,54 @@ class Install extends Classes
         */
         if($this->result->num_rows==0)
         {
-            for($i=0;$i<$piece;$i++)
+            for($i=1;$i<=$_SESSION['piece'];$i++)
             {
-                /**
-                * price with random value
-                */
-                $price=rand(40000,180000);
+                    /**
+                    * price with random value
+                    */
+                    $price=rand(40000,180000);
 
-                /**
-                 * discount random
-                 * discount compute
-                 */
-                $discount=rand(5,65);
-                $discountPrice=$price/100*(100-$discount);
+                    /**
+                     * discount random
+                     * discount compute
+                     */
+                    $discount=rand(5,65);
+                    $discountPrice=$price/100*(100-$discount);
 
-                /**
-                 * characters to random string
-                 */
-                $characters = ' 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    /**
+                     * characters for random string
+                     */
+                    $characters = '       0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-                /**
-                 * random string to name
-                 */
-                $lengthName=rand(5,20);
-                $charactersLengthName = strlen($characters);
-                $randomStringName = '';
-                for ($i = 0; $i < $lengthName; $i++) {
-                    $randomStringName .= $characters[rand(0, $charactersLengthName - 1)];
-                }
-                
-                /**
-                 * random string to description
-                 */
-                $lengthDesc=rand(50,120);
-                $charactersLengthDesc = strlen($characters);
-                $randomStringDesc = '';
-                for ($i = 0; $i < $lengthDesc; $i++) {
-                    $randomStringDesc .= $characters[rand(0, $charactersLengthDesc - 1)];
-                }
+                    /**
+                     * random string to name
+                     */
+                    $lengthName=rand(5,20);
+                    $charactersLengthName = strlen($characters);
+                    $randomStringName = '';
+                    while (strlen($randomStringName)!=$lengthName) {
+                        $randomStringName .= $characters[rand(0, $charactersLengthName - 1)];
+                    }
+                    
+                    /**
+                     * random string to description
+                     */
+                    $lengthDesc=rand(50,120);
+                    $charactersLengthDesc = strlen($characters);
+                    $randomStringDesc = '';
+                    while (strlen($randomStringDesc)!=$lengthDesc) {
+                        $randomStringDesc .= $characters[rand(0, $charactersLengthDesc - 1)];
+                    }
 
-                /**
-                 * INSERT INTO monitor table
-                 */
-                $this->sql = "INSERT INTO monitor(size_id, resolution_id, brand_id, price, discount_price, name, description) 
-                VALUES ((SELECT id FROM size ORDER BY RAND() LIMIT 1),(SELECT id FROM resolution ORDER BY RAND() LIMIT 1), 
-                (SELECT id FROM brand ORDER BY RAND() LIMIT 1),".$price.",".$discountPrice.",'".$randomStringName."','".$randomStringDesc."')";
-                $this->result = $this->conn->query($this->sql);
-                echo 1;
+                    /**
+                     * INSERT INTO monitor table
+                     */
+                    $this->sql = "INSERT INTO monitor(size_id, resolution_id, brand_id, price, discount_price, name, description) 
+                    VALUES ((SELECT id FROM size ORDER BY RAND() LIMIT 1),(SELECT id FROM resolution ORDER BY RAND() LIMIT 1), 
+                    (SELECT id FROM brand ORDER BY RAND() LIMIT 1),".$price.",".$discountPrice.",'".$randomStringName."','".$randomStringDesc."')";
+                    $this->result = $this->conn->query($this->sql);        
             }
         }
-    }
-
-    public function data()
-    {
-        $this->sql = "SELECT * FROM monitor";
-        $this->result = $this->conn->query($this->sql);
-        return $this->result->num_rows;
     }
 }
 

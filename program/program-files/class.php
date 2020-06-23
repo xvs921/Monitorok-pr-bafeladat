@@ -49,7 +49,6 @@ class Classes extends Database
             $this->result = $this->conn->query($this->sql);
             $pageNumber=ceil($this->result->num_rows/$resultPerPage);
             $this->sql.=" LIMIT ". $firstItem.','.$resultPerPage;
-            echo $this->sql;
         }
         else if(isset($_GET['sort']) && $_GET['sort']=="valueMin")
         {
@@ -70,7 +69,6 @@ class Classes extends Database
             $this->result = $this->conn->query($this->sql);
             $pageNumber=ceil($this->result->num_rows/$resultPerPage);
             $this->sql.=" LIMIT ". $firstItem.','.$resultPerPage;
-            echo $this->sql;
         }
         else
         {
@@ -86,32 +84,38 @@ class Classes extends Database
             LEFT JOIN brand b ON b.id=m.brand_id
             LEFT JOIN resolution r ON r.id=m.resolution_id
             LEFT JOIN size s ON s.id=m.size_id
-            WHERE b.brand_name LIKE '".$search."%'";
+            WHERE b.brand_name LIKE '".$search."%' ORDER BY id";
             $this->result = $this->conn->query($this->sql);
             $pageNumber=ceil($this->result->num_rows/$resultPerPage);
             $this->sql.=" LIMIT ". $firstItem.','.$resultPerPage;
-            echo $this->sql;
         }
         $this->result = $this->conn->query($this->sql);
         ?>
         <table>
-        <tr><th>Id</th><th>Inch</th><th>Resolution</th><th>Brand</th>
-        <th>
-        <?php if(isset($_GET['search'])){
-            echo '<a href="index.php?page=1&sort=valueMin&search='.$_GET['search'].'">s</a>';
-        }
-        else{?>
-            <a href="index.php?page=1&sort=valueMin">s</a>
-        <?php } ?>
-        Price
-        <?php if(isset($_GET['search'])){
-            echo '<a href="index.php?page=1&sort=valueMax&search='.$_GET['search'].'">d</a>';
-        }
-        else{?>
-            <a href="index.php?page=1&sort=valueMax">d</a>
-        <?php } ?>
-        </th>
-        <th>Discount price</th><th>Name</th><th>Description</th></tr>
+            <tr>
+                <th>Id</th>
+                <th>Inch</th>
+                <th>Resolution</th>
+                <th>Brand</th>
+                <th>
+                <?php if(isset($_GET['search'])){
+                    echo '<a href="index.php?page=1&sort=valueMin&search='.$_GET['search'].'">s</a>';
+                }
+                else{?>
+                    <a href="index.php?page=1&sort=valueMin">s</a>
+                <?php } ?>
+                Price
+                <?php if(isset($_GET['search'])){
+                    echo '<a href="index.php?page=1&sort=valueMax&search='.$_GET['search'].'">d</a>';
+                }
+                else{?>
+                    <a href="index.php?page=1&sort=valueMax">d</a>
+                <?php } ?>
+                </th>
+                <th>Discount price</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
         <?php
         if ($this->result->num_rows > 0) {
             while($this->row = $this->result->fetch_assoc()) { ?>
@@ -140,19 +144,19 @@ class Classes extends Database
         for($page=1;$page<=$pageNumber;$page++){
             if(isset($_GET['sort']) && isset($_GET['search']))
             {
-                echo '<a href="index.php?page='.$page.'&sort='.$_GET['sort'].'&search='.$_GET['search'].'">'.$page.'getsearch</a>';
+                echo '<a href="index.php?page='.$page.'&sort='.$_GET['sort'].'&search='.$_GET['search'].'">'.$page.'</a>';
             }
             else if(isset($_POST["input_search"]))
             {
-                echo '<a href="index.php?page='.$page.'&search='.$_POST["input_search"].'">'.$page.'search</a>';
+                echo '<a href="index.php?page='.$page.'&search='.$_POST["input_search"].'">'.$page.'</a>';
             }
             else if(isset($_GET['search']))
             {
-                echo '<a href="index.php?page='.$page.'&search='.$_GET['search'].'">'.$page.'search</a>';
+                echo '<a href="index.php?page='.$page.'&search='.$_GET['search'].'">'.$page.'</a>';
             }
             else if(isset($_GET['sort']))
             {
-                echo '<a href="index.php?page='.$page.'&sort='.$_GET['sort'].'">'.$page.'sr</a>';
+                echo '<a href="index.php?page='.$page.'&sort='.$_GET['sort'].'">'.$page.'</a>';
             }
             else{
                 echo '<a href="index.php?page='.$page.'">'.$page.'</a>';
