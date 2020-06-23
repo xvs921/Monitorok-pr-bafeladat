@@ -4,12 +4,19 @@
 */
 include("install.php");
 $inst = new Install();
+
 /**
  * data UPLOAD
  */
 $inst->createDB();
 $inst->staticDataUpload();
 $inst->randomDataUpload();
+
+/**
+ * test data
+ */
+$inst->testcase(50);
+
 /**
  * LIST data from database
  */

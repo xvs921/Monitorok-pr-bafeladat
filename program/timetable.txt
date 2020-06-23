@@ -1,0 +1,10 @@
+adatbázis megtervezése és kapcsolódás megvalósítása 30 perc
+adatbázis adatfeltöltés megvalósítása 1 óra
+listázás 30 perc
+lapozhatóság 20 perc
+keresés 40 perc
+rendezés ár szerint 40 perc
+dokumentálás 20 perc
+
+összesen 4 óra
+

@@ -3,7 +3,7 @@
  * EXTEND from Database
  */
 include("database.php");
-class Classes extends Database
+class Classes extends Database implements Test
 {	
 	public function list()
 	{
@@ -40,11 +40,6 @@ class Classes extends Database
         $search="";
         $pageNumber=0;
         $firstItem=($page-1)*$resultPerPage;
-
-        /**
-         * $this->conn add $this->dbname
-         */
-        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
 
         /**
          * LIST what is the sql statement?
@@ -202,5 +197,23 @@ class Classes extends Database
                 echo '<a href="index.php?page='.$page.'">'.$page.'</a>';
             }
         }
-	}
-}?>
+    }
+    public function testCase($minimumData)
+    {
+        $this->sql = "SELECT * FROM monitor";
+        $this->result = $this->conn->query($this->sql);
+        echo $this->sql;
+        if($this->result->num_rows<$minimumData)
+        {
+            echo "Not enough data";
+        }
+    }
+}
+
+interface Test
+{
+    public function testCase($minimumData);
+}
+
+
+?>

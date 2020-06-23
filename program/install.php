@@ -184,7 +184,12 @@ class Install extends Classes
                     $this->sql = "INSERT INTO monitor(size_id, resolution_id, brand_id, price, discount_price, name, description) 
                     VALUES ((SELECT id FROM size ORDER BY RAND() LIMIT 1),(SELECT id FROM resolution ORDER BY RAND() LIMIT 1), 
                     (SELECT id FROM brand ORDER BY RAND() LIMIT 1),".$price.",".$discountPrice.",'".$randomStringName."','".$randomStringDesc."')";
-                    $this->result = $this->conn->query($this->sql);        
+                    $this->result = $this->conn->query($this->sql); 
+                    
+                    /**
+                    * $this->conn add $this->dbname
+                    */
+                    $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);       
             }
         }
     }
