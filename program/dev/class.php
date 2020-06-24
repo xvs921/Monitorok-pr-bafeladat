@@ -165,7 +165,7 @@ class Classes extends Database implements Test
         else{
             ?>
             <tr>
-                <td colspan="7">Empty Database</td>
+                <td colspan="7">Empty database or don't data agreement</td>
             </tr>
             <?php
         }?>

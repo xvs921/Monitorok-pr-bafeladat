@@ -193,25 +193,4 @@ class Install extends Classes
         }
     }
 }
-
-/**
- * Get array of properties
- * concatenated with a provided joint
- * 
- * @param string $joint
- * @return array
- */
-
-
-
- /**
-  * @var string
-  */
-
-  
- /**
-  * @var string|int
-  */
-
-
 ?>
