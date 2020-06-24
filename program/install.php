@@ -2,7 +2,7 @@
 /**
  * EXTEND from Classes
  */
-include("program-files/class.php");
+include("dev/class.php");
 class Install extends Classes
 {
     public function createDB()
@@ -118,7 +118,6 @@ class Install extends Classes
             $this->result = $this->conn->query($this->sql);
 
             $_SESSION['piece']=rand(50,120);
-            echo $_SESSION['piece'];
         }
     }
 

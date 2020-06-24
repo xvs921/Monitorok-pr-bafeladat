@@ -123,7 +123,6 @@ class Classes extends Database implements Test
         ?>
         <table>
             <tr>
-                <th>Id</th>
                 <th>Inch</th>
                 <th>Resolution</th>
                 <th>Brand</th>
@@ -153,7 +152,6 @@ class Classes extends Database implements Test
         if ($this->result->num_rows > 0) {
             while($this->row = $this->result->fetch_assoc()) { ?>
                 <tr>
-                    <td><?php echo $this->row["id"]; ?></td>
                     <td><?php echo $this->row["inch"]; ?></td>
                     <td><?php echo $this->row["resolution_value"]; ?></td>
                     <td><?php echo $this->row["brand_name"]; ?></td>
@@ -167,7 +165,7 @@ class Classes extends Database implements Test
         else{
             ?>
             <tr>
-                <td colspan="8">Empty Database</td>
+                <td colspan="7">Empty Database</td>
             </tr>
             <?php
         }?>
@@ -202,7 +200,6 @@ class Classes extends Database implements Test
     {
         $this->sql = "SELECT * FROM monitor";
         $this->result = $this->conn->query($this->sql);
-        echo $this->sql;
         if($this->result->num_rows<$minimumData)
         {
             echo "Not enough data";
