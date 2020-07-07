@@ -1,0 +1,8 @@
+ - használj MVC patternt, legyenek jól elkülönítve a kód különböző részei
+ - namespace használata javasolt, ez is átláthatóbbá teszi a kódot
+ - lehet composert használni
+ - egy fájlban egy osztály/interface legyen
+ - az echo-zások és php kód megszakítások ne legyenek a php függvényekben, tölts be egy külön sablon fájlt a "View" rétegben
+ - Model réteg: legyen egy abstract model, amiben az alap EAV lekérdezéseket megcsinálod, és ezt egészítse ki a Monitor model, ebben az osztályban már csak a "monitor-specifikus" dolgok legyenek
+ - az sql-eknél nem szép a sok duplikált query, ezek is legyenek átszervezve, állítsd össze a végső lekérdezést, ne legyenek "beégetve"
+ - ne legyen az attribútumoknak külön-külön táblája, elég egy tábla a monitor entitásnak, egy tábla az attribútumoknak, és egy tábla az attribútum értékeknek(legyen varchar az érték tárolása, ennél jobban most nem szükséges szétbontani)
